@@ -8,7 +8,7 @@ import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInSignUpPage from "./pages/signin-signup/signin-signup.component";
-import { auth } from "./firebase/firebase.utils";
+import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 
 //Style import
 import "./App.css";
@@ -24,9 +24,24 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
-      this.setState({ currentUser: user });
-      console.log(user);
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      //auth.onAuthStateChanged is a native method of Firebase auth that lets us listen to changes to the login state
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        //Below, we'll set the state to the user data we get from DB
+        userRef.onSnapshot((snapShot) => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data(),
+            },
+          });
+        });
+      } else {
+        //if the userAuth is false (null or logout), the app will set the state to null
+        this.setState({ currentUser: userAuth });
+      }
     });
   }
 
