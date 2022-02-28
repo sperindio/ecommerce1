@@ -37,6 +37,7 @@ class App extends React.Component {
               ...snapShot.data(),
             },
           });
+          console.log(this.state);
         });
       } else {
         //if the userAuth is false (null or logout), the app will set the state to null
