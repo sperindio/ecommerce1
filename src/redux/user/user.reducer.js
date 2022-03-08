@@ -1,10 +1,12 @@
+import { userActionTypes } from "./user.types";
+
 const INITIAL_STATE = {
   currentUser: null,
 }; //We set an initial state for the reducer since, at first, we need to have an initial state to compare the one passed through the action
 
 const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case "SET_CURRENT_USER":
+    case userActionTypes.SET_CURRENT_USER:
       return {
         ...state,
         currentUser: action.payload,
