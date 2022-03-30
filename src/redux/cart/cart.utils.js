@@ -28,4 +28,4 @@ export const removeItemFromCart = (cartItems, cartItemToRemove) => {
       ? { ...cartItem, quantity: cartItem.quantity - 1 }
       : cartItem
   );
-};
+}; //This function will first check if the item we want to remove actually exist in the cart, then it checks if quantity is equal to 1. If >1 it will just decrease the quantity, if === 1 it will remove the item from the cart.
