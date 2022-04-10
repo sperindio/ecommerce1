@@ -9,7 +9,7 @@ import { createStructuredSelector } from "reselect";
 import { selectCartHidden } from "../../redux/cart/cart.selector";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
 //Styles
-import "./header.styles.scss";
+
 import {
   HeaderContainer,
   LogoContainer,
