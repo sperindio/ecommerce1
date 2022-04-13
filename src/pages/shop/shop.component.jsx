@@ -27,13 +27,30 @@ class ShopPage extends React.Component {
   componentDidMount() {
     const { updateCollections } = this.props;
     const collectionRef = firestore.collection("collections");
-    this.unsubscribeFromSnapshot = collectionRef.onSnapshot(
+
+    /*     //The "fetch" method is similiar to the get() method, but the object returned is far more articulated than the others.
+    fetch(
+      "https://firestore.googleapis.com/v1/projects/crwn-db-4e424/databases/(default)/documents/collections"
+    )
+      .then((response) => response.json())
+      .then((collections) => console.log(collections)); */
+
+    //This way is a one-time fetch method, quite common and doesn't require a listener component
+    collectionRef.get().then((snapshot) => {
+      const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
+      updateCollections(collectionsMap);
+      this.setState({ loading: false });
+    });
+
+    /*     
+      //This method to fetch data is more advanced. It establishes a live listener on the DB or whatever event-generating component.
+      this.unsubscribeFromSnapshot = collectionRef.onSnapshot(
       async (snapshot) => {
         const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
         updateCollections(collectionsMap);
         this.setState({ loading: false });
       }
-    );
+    ); */
   }
 
   render() {
