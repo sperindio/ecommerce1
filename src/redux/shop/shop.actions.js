@@ -18,7 +18,7 @@ export const fetchCollectionsFailure = (errorMessage) => ({
   payload: errorMessage,
 });
 
-export const fetchCollectionsStartAsync = () => {
+/* export const fetchCollectionsStartAsync = () => {
   return (dispatch) => {
     const collectionRef = firestore.collection("collections");
     dispatch(fetchCollectionsStart());
@@ -32,3 +32,4 @@ export const fetchCollectionsStartAsync = () => {
       .catch((error) => dispatch(fetchCollectionsFailure(error.message)));
   };
 };
+ */

@@ -4,14 +4,14 @@ import { Route } from "react-router-dom";
 import CollectionPageContainer from "../collection/collection.container";
 
 import { connect } from "react-redux";
-import { fetchCollectionsStartAsync } from "../../redux/shop/shop.actions";
+import { fetchCollectionsStart } from "../../redux/shop/shop.actions";
 
 class ShopPage extends React.Component {
   /*   //Fetch shop data from Firestor
   unsubscribeFromSnapshot = null; */
   componentDidMount() {
-    const { fetchCollectionsStartAsync } = this.props;
-    fetchCollectionsStartAsync();
+    const { fetchCollectionsStart } = this.props;
+    fetchCollectionsStart();
 
     /* 
    //EVERYTHING IS MANAGED BY REDUX AND REDUX-THUNK SINCE IT'S A BETTER PRACTICE. SHOP ITEMS COULDN'T LOAD UNLESS SHOP PAGE WAS VISITED
@@ -63,7 +63,7 @@ class ShopPage extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync()),
+  fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
 });
 
 export default connect(null, mapDispatchToProps)(ShopPage);

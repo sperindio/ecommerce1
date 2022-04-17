@@ -10,7 +10,6 @@ import Header from "./components/header/header.component";
 import SignInSignUpPage from "./pages/signin-signup/signin-signup.component";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { connect } from "react-redux";
-import { setCurrentUser } from "./redux/user/user.actions";
 import CheckoutPage from "./pages/checkout/checkout.component";
 
 //Selectors
@@ -24,9 +23,7 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    const { setCurrentUser } = this.props;
-
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+    /*     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       //auth.onAuthStateChanged is a native method of Firebase auth that lets us listen to changes to the login state
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
@@ -42,7 +39,7 @@ class App extends React.Component {
         //if the userAuth is false (null or logout), the app will set the state to null
         setCurrentUser(userAuth);
       }
-    });
+    }); */
   }
 
   componentWillUnmount() {
@@ -50,6 +47,7 @@ class App extends React.Component {
   }
 
   render() {
+    const { currentUser } = this.props;
     return (
       <div>
         <Header />
@@ -61,11 +59,7 @@ class App extends React.Component {
             exact
             path="/signin"
             render={() =>
-              this.props.currentUser ? (
-                <Redirect to="/" />
-              ) : (
-                <SignInSignUpPage />
-              )
+              currentUser ? <Redirect to="/" /> : <SignInSignUpPage />
             }
           />
         </Switch>
@@ -78,7 +72,4 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);
