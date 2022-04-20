@@ -8,9 +8,9 @@ import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInSignUpPage from "./pages/signin-signup/signin-signup.component";
-import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { connect } from "react-redux";
 import CheckoutPage from "./pages/checkout/checkout.component";
+import { checkUserSession } from "./redux/user/user.actions";
 
 //Selectors
 import { createStructuredSelector } from "reselect";
@@ -23,6 +23,8 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
+    const { checkUserSession } = this.props;
+    checkUserSession();
     /*     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       //auth.onAuthStateChanged is a native method of Firebase auth that lets us listen to changes to the login state
       if (userAuth) {
@@ -72,4 +74,8 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => ({
+  checkUserSession: () => dispatch(checkUserSession()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
