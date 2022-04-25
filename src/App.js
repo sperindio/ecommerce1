@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 //React-Router-Dom import
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -19,13 +19,12 @@ import { selectCurrentUser } from "./redux/user/user.selectors";
 //Style import
 import "./App.css";
 
-class App extends React.Component {
-  unsubscribeFromAuth = null;
-
-  componentDidMount() {
-    const { checkUserSession } = this.props;
+const App = ({ currentUser, checkUserSession }) => {
+  useEffect(() => {
     checkUserSession();
-    /*     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+  }, [checkUserSession]);
+
+  /*     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       //auth.onAuthStateChanged is a native method of Firebase auth that lets us listen to changes to the login state
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
@@ -42,33 +41,25 @@ class App extends React.Component {
         setCurrentUser(userAuth);
       }
     }); */
-  }
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
-
-  render() {
-    const { currentUser } = this.props;
-    return (
-      <div>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/shop" component={ShopPage} />
-          <Route exact path="/checkout" component={CheckoutPage} />
-          <Route
-            exact
-            path="/signin"
-            render={() =>
-              currentUser ? <Redirect to="/" /> : <SignInSignUpPage />
-            }
-          />
-        </Switch>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <Header />
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route path="/shop" component={ShopPage} />
+        <Route exact path="/checkout" component={CheckoutPage} />
+        <Route
+          exact
+          path="/signin"
+          render={() =>
+            currentUser ? <Redirect to="/" /> : <SignInSignUpPage />
+          }
+        />
+      </Switch>
+    </div>
+  );
+};
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
